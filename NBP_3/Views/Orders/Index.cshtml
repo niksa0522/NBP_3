@@ -1,0 +1,92 @@
+﻿@model OrderList
+@{
+    ViewData["Title"] = "Orders";
+}
+
+<h1>Orders</h1>
+
+@if(User.IsInRole("Admin"))
+{
+    <form asp-controller="Orders"  asp-action="Index" method="post" >
+        <div>
+                        <label asp-for="ID" class="control-label"></label>
+                        <input asp-for="ID" class="form-control" value="@Model.ID" />
+                        </div>
+                        <div>
+                        <label asp-for="date" class="control-label"></label>
+                        <input asp-for="date" type="date" class="form-control" value="@Model.date" />
+                        </div>
+                        <div >
+                        <input type="submit" value="Search" class="btn btn-primary" />
+                    </div>
+</form>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Order Date
+            </th>
+            <th>
+                Price
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Orders) {
+        <tr>
+            <td>
+                @Html.DisplayName(item.Id.ToString())
+            </td>
+            <td>
+               @Html.DisplayName(item.orderDate.ToString())
+            </td>
+            <td>
+                 @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                <a asp-action="View" asp-route-id="@item.Id">View</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+
+}
+<table>
+    <tr>
+<td>
+<form asp-controller="Orders"  asp-action="Index" method="post">
+    <input asp-for="ID" type="hidden"/>
+    <input asp-for="date" type="hidden"/>
+    <input asp-for="PageIndex" type="hidden" value="@Model.PageIndex"/>
+    <input asp-for="TotalPages" type="hidden"/>
+
+
+                        <input type="submit" value="Previous" name="Previous" class="btn btn-default @prevDisabled" />
+
+
+</form>
+</td>
+<td>
+<form asp-controller="Orders"  asp-action="Index" method="post">
+    <input asp-for="ID" type="hidden"/>
+    <input asp-for="date" type="hidden"/>
+    <input asp-for="PageIndex" type="hidden" value="@Model.PageIndex"/>
+    <input asp-for="TotalPages" type="hidden"/>
+
+
+
+                        <input type="submit" value="Next" name="Next" class="btn btn-default @nextDisabled" />
+
+</form>
+</td>
+</tr>
+</table>

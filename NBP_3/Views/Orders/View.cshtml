@@ -1,0 +1,93 @@
+﻿@model NBP_3.Models.MongoOrder
+@{
+    ViewData["Title"] = "Order";
+}
+
+<h1>Order</h1>
+
+<p>ID: @Model.Id.ToString()</p>
+
+<p>Price: @Model.Price</p>
+
+<p>Order Time: @Model.orderDate.ToString()</p>
+
+<div>
+    <h2>Order Info</h2>
+    <p>Name Of Recepient: @Model.FullName</p>
+    <p>Phone Number: @Model.Phone</p>
+    <p>Address:</p>
+    <p>Town: @Model.Address.Town</p>
+    <p>Post Number: @Model.Address.postNum</p>
+    <p>Street Name: @Model.Address.Street</p>
+    <p>Street Number @Model.Address.streetNum</p>
+    @if (@Model.Address.aptNum != null)
+    {
+        <p>Apartment Number: @Model.Address.aptNum</p>
+    }
+</div>
+<h2>Products Ordered:</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Item Name
+            </th>
+            <th>
+                Item Price
+            </th>
+            <th>
+                Amount
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.produtcts) {
+        <tr>
+            <td>
+                @Html.DisplayName(item.Name)
+            </td>
+            <td>
+               @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                 @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+@foreach(var v in Model.produtcts)
+{
+   <p></p> 
+}
+<h2>Order Status/Info</h2>
+@foreach(var v in Model.OrderStatus)
+{
+   <p>@v</p> 
+}
+@{
+                            if(User?.Identity?.IsAuthenticated ?? false)
+                            {
+                                
+                                if(User.IsInRole("Admin"))
+                                {
+                                    <form asp-controller="Orders"  asp-action="AddOrderInfo" method="post">
+                                    
+                     <div>
+                     <input asp-for="Id" type="hidden"/>
+                        Product Name: <input type="text" name="orderInfo" />
+                        <input type="submit" value="Add Info" />
+                    </div>
+</form>
+                                }
+                            }
+                        }
+@if (ViewBag.Message != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.Message");
+            };
+        </script>
+        ViewBag.Message = null;
+    }

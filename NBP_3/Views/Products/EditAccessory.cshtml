@@ -1,0 +1,72 @@
+﻿@model NBP_3.Models.AutoAccessory
+
+@{
+    ViewData["Title"] = "Edit Accessory";
+}
+
+<h1>Add</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditAccessory" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="@Model.Id" disabled="true"/>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" type="number" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" rows = "5" cols = "60" name = "Description">
+                    Enter details here...
+                </textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Brand" class="control-label"></label>
+                <select asp-for="Brand" class="form-control" asp-items="@ViewBag.Brands" selected="@Model.Brand"></select>
+                
+                <span asp-validation-for="Brand" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tags" class="control-label"></label>
+                <ul>
+                @for(var i=0; i < Model.Tags.Count; i++)
+                {
+                    <li>
+                        <input type="checkbox" asp-for="@Model.Tags[i].Selected"/>
+                        <label asp-for="@Model.Tags[i].Selected">@Model.Tags[i].Text</label>
+                        <input type="hidden" asp-for="@Model.Tags[i].Value"/>
+                        <input type="hidden" asp-for="@Model.Tags[i].Text"/>
+                    </li>
+                }
+                </ul>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label">Choose Image</label>
+                            <input asp-for="Image" type="file" id="Image" 
+           name="Image" />
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

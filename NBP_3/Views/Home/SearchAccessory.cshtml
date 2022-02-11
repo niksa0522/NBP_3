@@ -1,0 +1,161 @@
+﻿@model NBP_3.Models.AutoAccessoryList
+@{
+    ViewData["Title"] = "Auto Accessories";
+}
+
+<h1>Auto Accessories</h1>
+
+<form asp-controller="Home"  asp-action="SearchAccessory" method="post">
+
+    <table style="table-layout: fixed; width: 100%;">
+        <tbody>
+            <tr>
+                <td>
+                     <div>
+                        <label asp-for="searchString" class="control-label"></label>
+                        <input asp-for="searchString" class="form-control" value="@Model.searchString" />
+                    </div>
+                </td>
+                <td>
+                     <div >
+                        <label asp-for="maxPrice" class="control-label"></label>
+                        <input asp-for="maxPrice" type="number" class="form-control" value="@Model.maxPrice" />
+                    </div>
+                </td>
+                <td>
+                     <div >
+                        <label asp-for="brandList" class="control-label"></label>
+                        <ul>
+                        @for(var i=0; i < Model.brandList.Count; i++)
+                        {
+                            <li>
+                                <input type="checkbox" asp-for="@Model.brandList[i].Selected"/>
+                                <label asp-for="@Model.brandList[i].Selected">@Model.brandList[i].Text</label>
+                                <input type="hidden" asp-for="@Model.brandList[i].Value"/>
+                                 <input type="hidden" asp-for="@Model.brandList[i].Text"/>
+                              </li>
+                         }       
+                        </ul>
+                     </div>
+                </td>
+                 <td>
+                    <div >
+                        <label asp-for="tagList" class="control-label"></label>
+                        <ul>
+                        @for(var i=0; i < Model.tagList.Count; i++)
+                        {
+                            <li>
+                                <input type="checkbox" asp-for="@Model.tagList[i].Selected"/>
+                                <label asp-for="@Model.tagList[i].Selected">@Model.tagList[i].Text</label>
+                                <input type="hidden" asp-for="@Model.tagList[i].Value"/>
+                                <input type="hidden" asp-for="@Model.tagList[i].Text"/>
+                            </li>
+                        }
+                        </ul>
+                    </div>
+                </td>
+                <td>
+                    <div >
+                        <input type="submit" value="Search" class="btn btn-primary" />
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+
+
+<table class="table" style="table-layout: fixed; width: 100%;">
+    <tbody>
+        @for(var i = 0; i < ViewBag.size; i = i + 4)
+        {
+            <tr>
+                @for(var j = 0; j < 4 ; j++){
+                    @if (ViewBag.size > i + j)
+                    {
+                       var item = Model.AutoAccessories.ElementAt(i + j);
+                       <td style="width:25%;">
+                          Name: <a asp-controller="Home" asp-action="ViewAccessory" asp-route-id="@item.Id">@Html.DisplayName(item.Name) </a>
+                          <p>Price: @Html.DisplayName(item.Price.ToString())</p>
+                          <img src="@ViewBag.ImageDataUrl[i+j]" />
+                          @if(User?.Identity?.IsAuthenticated ?? false)
+                            {
+                                
+                                @if(User.IsInRole("Admin"))
+                                {
+                                    <a class="nav-link text-dark" asp-controller="Products" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                    <a class="nav-link text-dark" asp-controller="Products" asp-action="EditAccessory" asp-route-id="@item.Id">Edit</a>
+                                }
+                            }
+                       </td>
+                    }
+                }   
+            </tr>
+        }
+    </tbody>
+</table>
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+
+}
+<table>
+    <tr>
+<td>
+<form asp-controller="Home"  asp-action="SearchAccessory" method="post">
+    <input asp-for="searchString" type="hidden"/>
+    <input asp-for="maxPrice" type="hidden"/>
+    <label asp-for="brandList" type="hidden"/>
+    <label asp-for="tagList" type="hidden"/>
+    <input asp-for="PageIndex" type="hidden" value="@Model.PageIndex"/>
+    <input asp-for="TotalPages" type="hidden"/>
+                            @for(var i=0; i < Model.tagList.Count; i++)
+                        {
+                                <input type="hidden" asp-for="@Model.tagList[i].Selected"/>
+                                <input type="hidden" asp-for="@Model.tagList[i].Value"/>
+                                <input type="hidden" asp-for="@Model.tagList[i].Text"/>
+                        }
+                        @for(var i=0; i < Model.brandList.Count; i++)
+                        {
+                                <input type="hidden" asp-for="@Model.brandList[i].Selected"/>
+                                <input type="hidden" asp-for="@Model.brandList[i].Value"/>
+                                <input type="hidden" asp-for="@Model.brandList[i].Text"/>
+                        }
+
+
+                        <input type="submit" value="Previous" name="Previous" class="btn btn-default @prevDisabled" />
+
+
+</form>
+</td>
+<td>
+<form asp-controller="Home"  asp-action="SearchAccessory" method="post">
+    <input asp-for="searchString" type="hidden"/>
+    <input asp-for="maxPrice" type="hidden"/>
+
+    <label asp-for="brandList" type="hidden"/>
+    <label asp-for="tagList" type="hidden"/>
+    <input asp-for="PageIndex" type="hidden" value="@Model.PageIndex"/>
+    <input asp-for="TotalPages" type="hidden"/>
+                            @for(var i=0; i < Model.tagList.Count; i++)
+                        {
+                                <input type="hidden" asp-for="@Model.tagList[i].Selected"/>
+                                <input type="hidden" asp-for="@Model.tagList[i].Value"/>
+                                <input type="hidden" asp-for="@Model.tagList[i].Text"/>
+                        }
+                        @for(var i=0; i < Model.brandList.Count; i++)
+                        {
+                                <input type="hidden" asp-for="@Model.brandList[i].Selected"/>
+                                <input type="hidden" asp-for="@Model.brandList[i].Value"/>
+                                <input type="hidden" asp-for="@Model.brandList[i].Text"/>
+                        }
+
+
+
+                        <input type="submit" value="Next" name="Next" class="btn btn-default @nextDisabled" />
+
+</form>
+</td>
+</tr>
+</table>
+

@@ -1,0 +1,49 @@
+﻿@model NBP_3.Models.MongoAutoAccessory
+@{
+    ViewData["Title"] = "Auto Accessory";
+}
+
+<h1>@Model.Name</h1>
+
+<table class="table">
+
+    <tr>
+        <td>Price: </td>
+        <td>@Model.Price</td>
+    </tr>
+    <tr>
+        <td rowspan="2">Description: </td>
+        <td rowspan="2">@Model.Description</td>
+    </tr>
+    <tr>
+
+    </tr>
+    <tr>
+        <td>Brand: </td>
+        <td>@Model.Price</td>
+    </tr>
+    <tr>
+        <td>Tags: </td>
+        <td>@foreach(var v in Model.Tags){
+                <span>@v</span>
+            }</td>
+    </tr>
+    <tr>
+        <td rowspan="2" colspan="2"> <img src="@ViewBag.ImageDataUrl"/></td>
+    </tr>
+    <tr>
+
+    </tr>
+</table>
+@if(User?.Identity?.IsAuthenticated ?? false){
+                                    <a class="btn btn-default" asp-area="" asp-controller="Cart" asp-action="AddAccessoryToCart" asp-route-id="@Model.Id" onclick="">Add To Cart</a>
+}
+@if (ViewBag.Message != null)
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                alert("@ViewBag.Message");
+            };
+    </script>
+    ViewBag.Message = null;
+}

@@ -1,0 +1,60 @@
+﻿@model IEnumerable<NBP_3.Models.MongoTag>
+@{
+    ViewData["Title"] = "Tags";
+}
+
+<h1>Tags</h1>
+
+
+<form asp-controller="TagBrandCar"  asp-action="AddTag" method="post">
+    <p>
+        Tag: <input type="text" name="tag" />
+        <select name="type">
+            <option value="Part">Part</option>
+            <option value="Accessory">Accessory</option>
+            <option value="Both">Both</option>
+        </select>
+        <input type="submit" value="Add" />
+    </p>
+</form>
+<p>
+    <a asp-action="Index">Back</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayName(item.Id.ToString())
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                    @foreach(var j in item.Type)
+                    {
+                        <p>@Html.DisplayName(j)</p>
+                    }
+            </td>
+            <td>
+                <a asp-action="DeleteTag" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
