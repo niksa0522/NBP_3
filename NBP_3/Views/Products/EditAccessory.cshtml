@@ -1,4 +1,4 @@
-﻿@model NBP_3.Models.AutoAccessory
+﻿@model NBP_3.Models.AutoAccessoryNoImage
 
 @{
     ViewData["Title"] = "Edit Accessory";
@@ -51,7 +51,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Image" class="control-label">Choose Image</label>
-                            <input asp-for="Image" type="file" id="Image" 
+                            <input asp-for="Image" formnovalidate="formnovalidate" type="file" id="Image" accept="image/png, image/gif, image/jpeg"
            name="Image" />
             </div>
 

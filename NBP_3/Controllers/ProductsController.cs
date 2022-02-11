@@ -64,12 +64,14 @@ namespace NBP_3.Controllers
             ac.Brand=autoAccessory.Brand;
             ac.Price=autoAccessory.Price;
 
-
+            if (autoAccessory.Image != null)
+            {
                 MemoryStream ms = new MemoryStream();
                 autoAccessory.Image.CopyTo(ms);
                 ac.Image = ms.ToArray();
                 ms.Close();
                 ms.Dispose();
+            }
 
             MongoDBLogic.AddAutoAccessory(ac, database);
 
@@ -129,12 +131,14 @@ namespace NBP_3.Controllers
             ac.Price = autoPart.Price;
             ac.Cars = cars;
 
-
-            MemoryStream ms = new MemoryStream();
-            autoPart.Image.CopyTo(ms);
-            ac.Image = ms.ToArray();
-            ms.Close();
-            ms.Dispose();
+            if (autoPart.Image != null)
+            {
+                MemoryStream ms = new MemoryStream();
+                autoPart.Image.CopyTo(ms);
+                ac.Image = ms.ToArray();
+                ms.Close();
+                ms.Dispose();
+            }
 
             MongoDBLogic.AddAutoPart(ac, database);
 
@@ -175,7 +179,7 @@ namespace NBP_3.Controllers
                 checkboxes.Add(new CheckboxList_model() { Selected = selected, Value = val, Text = tag.Name });
                 val++;
             }
-            AutoAccessory ac = new AutoAccessory();
+            AutoAccessoryNoImage ac = new AutoAccessoryNoImage();
 
             ac.Name = mp.Name;
             ac.Price = mp.Price;
@@ -216,7 +220,7 @@ namespace NBP_3.Controllers
                 checkboxesCars.Add(new CheckboxList_model() { Selected = selected, Value = val, Text = tag.Name });
                 val++;
             }
-            AutoPart ap = new AutoPart();
+            AutoPartNoImage ap = new AutoPartNoImage();
             ap.Name = mp.Name;
             ap.Price = mp.Price;
             ap.Description = mp.Description;
@@ -229,7 +233,7 @@ namespace NBP_3.Controllers
             return View(ap);
         }
         [HttpPost]
-        public IActionResult EditAccessory(AutoAccessory autoAccessory, string Id)
+        public IActionResult EditAccessory(AutoAccessoryNoImage autoAccessory, string Id)
         {
             MongoAutoAccessory ac = MongoDBLogic.GetAutoAccessory(Id, database);
 
@@ -263,7 +267,7 @@ namespace NBP_3.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditPart(AutoPart autoPart, string Id)
+        public IActionResult EditPart(AutoPartNoImage autoPart, string Id)
         {
 
             MongoAutoPart ac = MongoDBLogic.GetAutoPart(Id, database);

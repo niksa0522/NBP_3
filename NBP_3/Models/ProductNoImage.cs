@@ -6,7 +6,7 @@ using MongoDB.Driver;
 
 namespace NBP_3.Models
 {
-    public class Product
+    public class ProductNoImage
     {
         public ObjectId Id { get; set; }
         public string Name { get; set; }
@@ -15,7 +15,7 @@ namespace NBP_3.Models
 
         public string Brand { get; set; }
 
-        public IFormFile Image { get; set; }
+        public IFormFile? Image { get; set; }
 
         public List<CheckboxList_model> Tags { get; set; }
 

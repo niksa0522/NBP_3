@@ -69,7 +69,7 @@ namespace IdentityMongo.Controllers
 
                 IdentityResult result = await userManager.CreateAsync(appUser, user.Password);
 
-                //Adding User to Admin Role
+                //Adding User to Standard Role
                 await userManager.AddToRoleAsync(appUser, "Standard");
 
                 
@@ -77,7 +77,11 @@ namespace IdentityMongo.Controllers
                 if (result.Succeeded)
                 {
                     MongoDBLogic.CreateUser(user.Username, database);
-                    return RedirectToAction("Index", "Home");
+                    Microsoft.AspNetCore.Identity.SignInResult resultSI = await signInManager.PasswordSignInAsync(appUser, user.Password, false, false);
+                    if (resultSI.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
                 else
                 {

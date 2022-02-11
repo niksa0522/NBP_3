@@ -91,18 +91,38 @@
                     {
                        var item = Model.AutoParts.ElementAt(i + j);
                        <td style="width:25%;">
-                          Name: <a asp-controller="Home" asp-action="ViewPart" asp-route-id="@item.Id">@Html.DisplayName(item.Name) </a>
-                          <p>Price: @Html.DisplayName(item.Price.ToString())</p>
-                          <img src="@ViewBag.ImageDataUrl[i+j]" />
-                          @if(User?.Identity?.IsAuthenticated ?? false)
+
+                           <table class="table" style="table-layout: fixed; width: 100%;">
+                               <tr>
+                                   <td>
+                                       Name: <a asp-controller="Home" asp-action="ViewPart" asp-route-id="@item.Id">@Html.DisplayName(item.Name) </a>
+                                   </td>
+                                   <td>
+                                       Price: @Html.DisplayName(item.Price.ToString())
+                                   </td>
+                               </tr>
+                               <tr>
+                                   <td colspan="2"><img src="@ViewBag.ImageDataUrl[i+j]" /></td>
+                                    
+                               </tr>
+                               @if(User?.Identity?.IsAuthenticated ?? false)
                             {
                                 
                                 @if(User.IsInRole("Admin"))
                                 {
-                                    <a class="nav-link text-dark" asp-controller="Products" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                                    <a class="nav-link text-dark" asp-controller="Products" asp-action="EditPart" asp-route-id="@item.Id">Edit</a>
+                                    <tr>
+                                        <td>
+                                            <a class="nav-link text-dark" asp-controller="Products" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                        </td>
+                                        <td>
+                                            <a class="nav-link text-dark" asp-controller="Products" asp-action="EditPart" asp-route-id="@item.Id">Edit</a>
+                                        </td>
+                                    </tr>
+                                   
+                                    
                                 }
                             }
+                           </table>
                        </td>
                     }
                 }   
